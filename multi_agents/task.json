@@ -1,10 +1,10 @@
 {
-  "query": "Is AI in a hype cycle?",
-  "max_sections": 3,
+  "query": "I need a report on China's ban on the import of lumber from Australia, which started in 2020.  I am particularly interested in the reasons for the ban, including both the stated reasons and any available speculation or information about unstated reasons for the ban",
+  "max_sections": 2,
   "publish_formats": {
     "markdown": true,
-    "pdf": true,
-    "docx": true
+    "pdf": false,
+    "docx": false
   },
   "include_human_feedback": false,
   "follow_guidelines": false,
@@ -12,7 +12,7 @@
   "guidelines": [
     "The report MUST be written in APA format",
     "Each sub section MUST include supporting sources using hyperlinks. If none exist, erase the sub section or rewrite it to be a part of the previous section",
-    "The report MUST be written in spanish"
+    "The report MUST be written in English"
   ],
   "verbose": true
 }

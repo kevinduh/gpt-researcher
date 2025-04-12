@@ -2,7 +2,7 @@
 
 This project implements report generation using GPT Researcher ([web](https://gptr.dev), [doc](https://docs.gptr.dev), [discord](https://discord.gg/QgZXvJAccX)). 
 
-## Quickstart
+## Quickstart 
 
 First, install the code in your conda environment (`scale25gptr`):
 
@@ -23,7 +23,9 @@ LANGCHAIN_TRACING_V2=true
 LANGCHAIN_API_KEY=<your_key>
 ```
 
-The Tavily key is needed for web search. The Langc using a "single" GPT-researcher agent. This essentially calls `gpt_researcher.py/agent.py`. As a RAG system, first it calls `conduct_research()` to gather context (relevant documents), then it calls `write_report()` generate the report:
+The [Tavily](https://tavily.com) key is needed for web search. The [Langchain](https://www.langchain.com) key is needed for Langsmith logging, which is optional but highly recommended. Both have free tiers. The OpenAI key is needed for LLM calls.
+
+Finally, we run a "single" GPT-researcher agent with the example script below. This essentially calls `gpt_researcher.py/agent.py`. As a RAG system, first it calls `conduct_research()` to gather context (relevant documents), then it calls `write_report()` generate the report:
 
 ```bash
 python tests/test-report.py
@@ -41,13 +43,33 @@ python tests/test-report.py
 
 Let's explain what went on with the following conceptual flowchart, cross-referencing with the example output snippet: 
 * The user's query is shown in [1] 
-* In [2], the Planner decides on the "agent" system prompt using a LLM call (SMART_LLM setting, defaults to openai:gpt-4o-2024-11-20), see `gpt_researcher/actions/agent_creator.py` 
-* In [3-4], the Planner searches the web and use it to decide new query reformulations, see `gpt_researcher/prompts.py:generate_search_queries_prompt`. Here it uses the STRATEGIC_LLM setting (defaults to openai:o3-mini). For defaults, see `gpt_researcher/config/variables/default.py`
-* Starting with [5], the Researchers will issue new search queries and then compress the returned documents [6]. The compression is currently implemented as an Embedding based filter (if similarity of a retrieved document chunk embedding is not close to the query embedding, then it is deleted). This is to reduce the ultimate context length for RAG.
+* In [2], the Planner decides on the system prompt to use in subsequent calls by asking a LLM (SMART_LLM setting, defaults to openai:gpt-4o-2024-11-20), see `gpt_researcher/actions/agent_creator.py` 
+* In [3-4], the Planner searches the web and use it to decide new query reformulations, see `gpt_researcher/prompts.py:generate_search_queries_prompt`. Here it uses the STRATEGIC_LLM setting for the LLM call (defaults to openai:o3-mini). For defaults, see `gpt_researcher/config/variables/default.py`
+* Starting with [5], the Researchers will issue new search queries and then compress the returned documents [6]. The retrieval is currently web search by Tavily. After documents are returned, they are filtered or compressed based on word embedding similarity to the query (this requires an embedding model, e.g. openai:text-embedding-3-small). This is to reduce the ultimate context length for RAG.
 * [7] shows the final assembled context from multiple search results, and [8] calls SMART_LLM to generate the report. For the final prompt, see `gpt_researcher/prompts.py:generate_report_prompt()`.
 
 <div align="center">
 <img align="center" height="600" src="https://github.com/assafelovic/gpt-researcher/assets/13554167/4ac896fd-63ab-4b77-9688-ff62aafcc527">
 </div>
 
+## Multi-Agent Framework
 
+While the RAG system demonstrated in `tests/test-report.py` is a good start, we are more interested in a multi-agent setup that gives more fine-grained control over the generation process. For this, we will use the code in `multi_agents/`, which uses [LangGraph](https://academy.langchain.com/courses/intro-to-langgraph). The implementation in `gpt_researcher/`) is treated as just one out of many agents, as shown in this conceptual flowchart:
+
+<div align="center">
+<img align="center" height="600" src="https://github.com/user-attachments/assets/ef561295-05f4-40a8-a57d-8178be687b18">
+</div>
+<br clear="all"/>
+
+To try out the multi-agent code, try running:
+
+```bash
+python multi_agents/main.py
+```
+
+This reads multi_agent/tasks.json and creates the report in `output/run_*`.
+
+
+## Modifications for SCALE25gen 
+
+todo

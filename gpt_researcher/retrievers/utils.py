@@ -15,6 +15,7 @@ VALID_RETRIEVERS = [
     "serper",
     "tavily",
     "pubmed_central",
+    "hltcoe"
 ]
 
 

@@ -3,7 +3,7 @@ channels:
   - defaults
 dependencies:
   - python=3.11
-  - pip=25.0.1
+  - pip=23.3.1
   - pip:
     - beautifulsoup4==4.13.3
     - colorama==0.4.6
@@ -24,6 +24,7 @@ dependencies:
     - langchain-text-splitters==0.3.6
     - langchain-openai==0.3.7
     - langchain-ollama==0.2.3
+    - langchain-together==0.3.0
     - langgraph==0.3.2
     - langgraph-checkpoint==2.0.16
     - langgraph-cli==0.1.74
@@ -45,3 +46,4 @@ dependencies:
     - json_repair==0.39.1
     - json5==0.10.0
     - loguru==0.7.3
+    - ir_datasets==0.5.10    

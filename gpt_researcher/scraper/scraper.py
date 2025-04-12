@@ -18,6 +18,7 @@ from . import (
     NoDriverScraper,
     TavilyExtract,
     FireCrawl,
+    HLTCOEScraper,
 )
 
 
@@ -176,6 +177,7 @@ class Scraper:
             "nodriver": NoDriverScraper,
             "tavily_extract": TavilyExtract,
             "firecrawl": FireCrawl,
+            "hltcoe": HLTCOEScraper,
         }
 
         scraper_key = None

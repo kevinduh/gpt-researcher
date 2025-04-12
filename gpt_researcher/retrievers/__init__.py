@@ -11,6 +11,7 @@ from .serpapi.serpapi import SerpApiSearch
 from .serper.serper import SerperSearch
 from .tavily.tavily_search import TavilySearch
 from .exa.exa import ExaSearch
+from .hltcoe.hltcoe import HLTCOESearch
 
 __all__ = [
     "TavilySearch",
@@ -25,5 +26,6 @@ __all__ = [
     "ArxivSearch",
     "SemanticScholarSearch",
     "PubMedCentralSearch",
-    "ExaSearch"
+    "ExaSearch",
+    "HLTCOESearch"
 ]

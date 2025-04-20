@@ -104,6 +104,72 @@ Please do your best, this is very important to my career.
 Assume that the current date is {date.today()}.
 """
 
+def generate_SCALE25_report_prompt(
+    question: str,
+    context,
+    report_source: str,
+    report_format="apa",
+    total_words=1000,
+    tone=None,
+    language="english",
+):
+    """Generates the report prompt for the given question and research summary.
+    Args: question (str): The question to generate the report prompt for
+            context (str): The research summary to generate the report prompt for
+    Returns: str: The report prompt for the given question and research summary
+    """
+
+    reference_prompt = f"""
+    You MUST cite your sources, especially for relevant sentences that answer the question.
+    When using information that comes from the documents, use inline notation which refer to the Document ID (e.g. [Document-ID]).
+    It is important to ensure that the Document ID is a valid string from the information above and that the information in the sentence is present in the document. 
+    Do not include a list of citations at the end of the document.
+    """
+
+    tone_prompt = f"Write the report in a {tone.value} tone." if tone else ""
+
+    return f"""
+Information: "{context}"
+---
+Using the above information, answer the following query or task: "{question}" in a detailed report --
+The report should focus on the answer to the query, should be well structured, informative, 
+in-depth, and comprehensive, with facts and numbers if available and at most {total_words} words.
+You should strive to write the report as long as you can using all relevant and necessary information provided.
+
+Please follow all of the following guidelines in your report:
+- You MUST determine your own concrete and valid opinion based on the given information. Do NOT defer to general and meaningless conclusions.
+- {reference_prompt}
+- {tone_prompt}
+
+You MUST write the report in the following language: {language}.
+Please do your best, this is very important to my career.
+Assume that the current date is {date.today()}.
+"""
+
+def generate_LiveRAG25_report_prompt(
+    question: str,
+    context,
+    report_source: str,
+    report_format="apa",
+    total_words=200,
+    tone=None,
+    language="english",
+):
+    """Generates the report prompt for the given question and research summary.
+    Args: question (str): The question to generate the report prompt for
+            context (str): The research summary to generate the report prompt for
+    Returns: str: The report prompt for the given question and research summary
+    """
+
+    tone_prompt = f"Write the report in a {tone.value} tone." if tone else ""
+
+    return f"""
+Information: "{context}"
+---
+Using the above information, answer the following query or task: "{question}" in one or two sentences.
+Use at most {total_words} words.
+"""
+
 def curate_sources(query, sources, max_results=10):
     return f"""Your goal is to evaluate and curate the provided scraped content for the research task: "{query}" 
     while prioritizing the inclusion of relevant and high-quality information, especially sources containing statistics, numbers, or concrete data.
@@ -509,6 +575,8 @@ report_type_mapping = {
     ReportType.CustomReport.value: generate_custom_report_prompt,
     ReportType.SubtopicReport.value: generate_subtopic_report_prompt,
     ReportType.DeepResearch.value: generate_deep_research_prompt,
+    ReportType.SCALE25Report.value: generate_SCALE25_report_prompt,
+    ReportType.LiveRAG25Report.value: generate_LiveRAG25_report_prompt,
 }
 
 

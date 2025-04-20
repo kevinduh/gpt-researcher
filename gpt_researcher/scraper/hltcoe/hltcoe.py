@@ -1,0 +1,31 @@
+import os
+import ir_datasets as irds
+
+def get_text_from_id(docid, collection):
+    d = irds.load(collection).docs.lookup(docid)
+    return d.title, d.text
+
+class HLTCOEScraper:
+
+    def __init__(self, link, session=None):
+        self.link = link
+        self.session = session
+        self.endpoint_collection = os.getenv('RETRIEVER_ENDPOINT_COLLECTION')
+
+    def scrape(self) -> tuple:
+        """
+        This function extracts content 
+
+        Returns:
+          The `scrape` method returns a tuple containing the extracted content, a list of image URLs, and
+        the title of the webpage specified by the `self.link` attribute. 
+        """
+
+        try:
+
+            title, content = get_text_from_id(self.link, self.endpoint_collection)
+            return content, [], title
+
+        except Exception as e:
+            print("Error! : " + str(e))
+            return "", [], ""

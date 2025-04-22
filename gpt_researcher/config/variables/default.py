@@ -7,9 +7,11 @@ DEFAULT_CONFIG: BaseConfig = {
     "FAST_LLM": "openai:gpt-4o-mini",
     "SMART_LLM": "openai:gpt-4o-2024-11-20",  # Has support for long responses (2k+ words).
     "STRATEGIC_LLM": "openai:o3-mini",  # Can be used with gpt-o1 or gpt-o3
+    "GENERATION_LLM": "openai:gpt-4o-2024-11-20",  # Default equals SMART_LLM
     "FAST_TOKEN_LIMIT": 2000,
     "SMART_TOKEN_LIMIT": 4000,
     "STRATEGIC_TOKEN_LIMIT": 4000,
+    "GENERATION_TOKEN_LIMIT": 4000,
     "BROWSE_CHUNK_MAX_LENGTH": 8192,
     "CURATE_SOURCES": False,
     "SUMMARY_TOKEN_LIMIT": 700,

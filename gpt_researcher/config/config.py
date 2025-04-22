@@ -33,6 +33,10 @@ class Config:
                 value = self.convert_env_value(key, env_value, BaseConfig.__annotations__[key])
             setattr(self, key.lower(), value)
 
+        # Setting environment variable in case OPENAI_BASE_URL is set in config_file
+        if "OPENAI_BASE_URL" in config.keys():
+            os.environ["OPENAI_BASE_URL"] = config["OPENAI_BASE_URL"]
+
         # Handle RETRIEVER with default value
         retriever_env = os.environ.get("RETRIEVER", config.get("RETRIEVER", "tavily"))
         try:
@@ -50,6 +54,11 @@ class Config:
         self.fast_llm_provider, self.fast_llm_model = self.parse_llm(self.fast_llm)
         self.smart_llm_provider, self.smart_llm_model = self.parse_llm(self.smart_llm)
         self.strategic_llm_provider, self.strategic_llm_model = self.parse_llm(self.strategic_llm)
+        if hasattr(self, 'generation_llm'):
+            self.generation_llm_provider, self.generation_llm_model = self.parse_llm(self.generation_llm)
+        else:
+            self.generation_llm_provider = self.smart_llm_provider
+            self.generation_llm_modelr = self.smart_llm_model
 
     def _handle_deprecated_attributes(self) -> None:
         if os.getenv("EMBEDDING_PROVIDER") is not None:
@@ -126,6 +135,8 @@ class Config:
         # Merge with default config to ensure all keys are present
         merged_config = DEFAULT_CONFIG.copy()
         merged_config.update(custom_config)
+        print(f"Loaded and updated config in {config_path}: {merged_config}")
+
         return merged_config
 
     @classmethod

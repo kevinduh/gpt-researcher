@@ -38,7 +38,7 @@ async def write_report_introduction(
     """
     try:
         introduction = await create_chat_completion(
-            model=config.smart_llm_model,
+            model=config.generation_llm_model,
             messages=[
                 {"role": "system", "content": f"{agent_role_prompt}"},
                 {"role": "user", "content": generate_report_introduction(
@@ -48,10 +48,10 @@ async def write_report_introduction(
                 )},
             ],
             temperature=0.25,
-            llm_provider=config.smart_llm_provider,
+            llm_provider=config.generation_llm_provider,
             stream=True,
             websocket=websocket,
-            max_tokens=config.smart_token_limit,
+            max_tokens=config.generation_token_limit,
             llm_kwargs=config.llm_kwargs,
             cost_callback=cost_callback,
         )
@@ -85,7 +85,7 @@ async def write_conclusion(
     """
     try:
         conclusion = await create_chat_completion(
-            model=config.smart_llm_model,
+            model=config.generation_llm_model,
             messages=[
                 {"role": "system", "content": f"{agent_role_prompt}"},
                 {"role": "user", "content": generate_report_conclusion(query=query,
@@ -93,10 +93,10 @@ async def write_conclusion(
                                                                        language=config.language)},
             ],
             temperature=0.25,
-            llm_provider=config.smart_llm_provider,
+            llm_provider=config.generation_llm_provider,
             stream=True,
             websocket=websocket,
-            max_tokens=config.smart_token_limit,
+            max_tokens=config.generation_token_limit,
             llm_kwargs=config.llm_kwargs,
             cost_callback=cost_callback,
         )
@@ -130,16 +130,16 @@ async def summarize_url(
     """
     try:
         summary = await create_chat_completion(
-            model=config.smart_llm_model,
+            model=config.generation_llm_model,
             messages=[
                 {"role": "system", "content": f"{role}"},
                 {"role": "user", "content": f"Summarize the following content from {url}:\n\n{content}"},
             ],
             temperature=0.25,
-            llm_provider=config.smart_llm_provider,
+            llm_provider=config.generation_llm_provider,
             stream=True,
             websocket=websocket,
-            max_tokens=config.smart_token_limit,
+            max_tokens=config.generation_token_limit,
             llm_kwargs=config.llm_kwargs,
             cost_callback=cost_callback,
         )
@@ -174,17 +174,17 @@ async def generate_draft_section_titles(
     """
     try:
         section_titles = await create_chat_completion(
-            model=config.smart_llm_model,
+            model=config.generation_llm_model,
             messages=[
                 {"role": "system", "content": f"{role}"},
                 {"role": "user", "content": generate_draft_titles_prompt(
                     current_subtopic, query, context)},
             ],
             temperature=0.25,
-            llm_provider=config.smart_llm_provider,
+            llm_provider=config.generation_llm_provider,
             stream=True,
             websocket=None,
-            max_tokens=config.smart_token_limit,
+            max_tokens=config.generation_token_limit,
             llm_kwargs=config.llm_kwargs,
             cost_callback=cost_callback,
         )
@@ -240,31 +240,31 @@ async def generate_report(
         content = f"{generate_prompt(query, context, report_source, report_format=cfg.report_format, tone=tone, total_words=cfg.total_words, language=cfg.language)}"
     try:
         report = await create_chat_completion(
-            model=cfg.smart_llm_model,
+            model=cfg.generation_llm_model,
             messages=[
                 {"role": "system", "content": f"{agent_role_prompt}"},
                 {"role": "user", "content": content},
             ],
             temperature=0.35,
-            llm_provider=cfg.smart_llm_provider,
+            llm_provider=cfg.generation_llm_provider,
             stream=True,
             websocket=websocket,
-            max_tokens=cfg.smart_token_limit,
+            max_tokens=cfg.generation_token_limit,
             llm_kwargs=cfg.llm_kwargs,
             cost_callback=cost_callback,
         )
     except:
         try:
             report = await create_chat_completion(
-                model=cfg.smart_llm_model,
+                model=cfg.generation_llm_model,
                 messages=[
                     {"role": "user", "content": f"{agent_role_prompt}\n\n{content}"},
                 ],
                 temperature=0.35,
-                llm_provider=cfg.smart_llm_provider,
+                llm_provider=cfg.generation_llm_provider,
                 stream=True,
                 websocket=websocket,
-                max_tokens=cfg.smart_token_limit,
+                max_tokens=cfg.generation_token_limit,
                 llm_kwargs=cfg.llm_kwargs,
                 cost_callback=cost_callback,
             )

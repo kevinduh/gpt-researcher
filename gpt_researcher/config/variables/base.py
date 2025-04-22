@@ -9,9 +9,11 @@ class BaseConfig(TypedDict):
     FAST_LLM: str
     SMART_LLM: str
     STRATEGIC_LLM: str
+    GENERATION_LLM: str
     FAST_TOKEN_LIMIT: int
     SMART_TOKEN_LIMIT: int
     STRATEGIC_TOKEN_LIMIT: int
+    GENERATION_TOKEN_LIMIT: int
     BROWSE_CHUNK_MAX_LENGTH: int
     SUMMARY_TOKEN_LIMIT: int
     TEMPERATURE: float

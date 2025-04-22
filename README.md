@@ -1,4 +1,4 @@
-# SCALE25gen GPT-Researcherr
+# SCALE25gen GPT-Researcher
 
 This project implements report generation using GPT Researcher ([web](https://gptr.dev), [doc](https://docs.gptr.dev), [discord](https://discord.gg/QgZXvJAccX)). 
 
@@ -7,7 +7,7 @@ This project implements report generation using GPT Researcher ([web](https://gp
 First, install the code in your conda environment (`scale25gptr`):
 
 ```bash
-git clone //github.com/kevinduh/gpt-researcher.git
+git clone https://github.com/kevinduh/gpt-researcher.git
 cd gpt-researcher
 conda env create -f conda_env.yaml
 conda activate scale25gptr
@@ -46,7 +46,7 @@ Let's explain what went on with the following conceptual flowchart, cross-refere
 * In [2], the Planner decides on the system prompt to use in subsequent calls by asking a LLM (SMART_LLM setting, defaults to openai:gpt-4o-2024-11-20), see `gpt_researcher/actions/agent_creator.py` 
 * In [3-4], the Planner searches the web and use it to decide new query reformulations, see `gpt_researcher/prompts.py:generate_search_queries_prompt`. Here it uses the STRATEGIC_LLM setting for the LLM call (defaults to openai:o3-mini). For defaults, see `gpt_researcher/config/variables/default.py`
 * Starting with [5], the Researchers will issue new search queries and then compress the returned documents [6]. The retrieval is currently web search by Tavily. After documents are returned, they are filtered or compressed based on word embedding similarity to the query (this requires an embedding model, e.g. openai:text-embedding-3-small). This is to reduce the ultimate context length for RAG.
-* [7] shows the final assembled context from multiple search results, and [8] calls SMART_LLM to generate the report. For the final prompt, see `gpt_researcher/prompts.py:generate_report_prompt()`.
+* [7] shows the final assembled context from multiple search results, and [8] calls GENERATION_LLM to generate the report. For the final prompt, see `gpt_researcher/prompts.py:generate_report_prompt()`.
 
 <div align="center">
 <img align="center" height="600" src="https://github.com/assafelovic/gpt-researcher/assets/13554167/4ac896fd-63ab-4b77-9688-ff62aafcc527">
@@ -72,4 +72,17 @@ This reads multi_agent/tasks.json and creates the report in `output/run_*`.
 
 ## Modifications for SCALE25gen 
 
-todo
+The folder `experiments/` contains settings that facilitate specific experiments. 
+The `config.*.json` files specify configurations such as which LLM to use. 
+The subfolders within `experiments/` contain example scripts that are specific to certain datasets. 
+
+For example: 
+
+```bash
+# runs LiveRAG experiment using default OpenAI service
+python experiments/LiveRAG25/run1.py experiments/config.openai.default.json
+
+# runs LiveRAG experiment using a local server with Falcon as the generation LLM
+python experiments/LiveRAG25/run1.py experiments/config.local.Falcon3-10B-Instruct.json
+```
+

@@ -34,3 +34,5 @@ class BaseConfig(TypedDict):
     DEEP_RESEARCH_CONCURRENCY: int
     DEEP_RESEARCH_DEPTH: int
     DEEP_RESEARCH_BREADTH: int
+    OPENAI_BASE_URL: str
+    RETRIEVER_ENDPOINT: str

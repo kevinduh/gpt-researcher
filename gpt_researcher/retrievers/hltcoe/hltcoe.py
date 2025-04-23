@@ -2,36 +2,8 @@ from typing import Any, Dict, List, Optional
 import requests
 import os
 import json
-from urllib.parse import quote
-import urllib.parse
 import ir_datasets as irds
 
-
-_colbert_server = {
-    #'neuclir/1/zh': 'r4n20:9090',
-    'neuclir/1/zh': 'r8n01:9090',
-    'neuclir/1/fa': 'r8n10:9191',
-    'neuclir/1/ru': 'r7n10:9292',
-    #'neuclir/1/zho': 'r4n20:9090',
-    'neuclir/1/zho': 'r8n01:9090',
-    'neuclir/1/fas': 'r8n10:9191',
-    'neuclir/1/rus': 'r7n10:9292'
-}
-_collection_name_mapping = {
-    'neuclir/1/zh': 'neuclir/1/zh',
-    'neuclir/1/fa': 'neuclir/1/fa',
-    'neuclir/1/ru': 'neuclir/1/ru',
-    'neuclir/1/zho': 'neuclir/1/zh',
-    'neuclir/1/fas': 'neuclir/1/fa',
-    'neuclir/1/rus': 'neuclir/1/ru',
-    'neuclir/1/zh': 'neuclir/1/zh',
-
-}
-
-def get_text_from_id(docid, collection):
-    global _collection_name_mapping
-    d = irds.load(_collection_name_mapping[collection]).docs.lookup(docid)
-    return d.title, d.text
 
 
 class HLTCOESearch():
@@ -77,31 +49,30 @@ class HLTCOESearch():
             ]
         """
         try:
-            print(self.query, self.params)
-            print(f'curl "{self.endpoint}/query_doc?query={self.query}&content=false&limit={max_results}"')
+            print(f'curl "{self.endpoint}/query_passage?query={self.query}&content=true&limit={max_results}"')
 
-            response = requests.get(f"{self.endpoint}/query_doc?",
-                                    params={**self.params, 'query': self.query, 'content': 'false', 'limit':{max_results}})
+            response = requests.get(f"{self.endpoint}/query_passage?",
+                                    params={**self.params, 'query': self.query, 'content': 'true', 'limit': max_results})
 
-            #print("-----")
-            #print(response.request.method)
-            #print(response.request.url)
-            #print(response.request.headers)
-            #print(response.request.body)
-            #print("-----")
+            # print("-----")
+            # print(response.request.method)
+            # print(response.request.url)
+            # print(response.request.headers)
+            # print(response.request.body)
+            # print("-----")
             
             response.raise_for_status()
 
             results = response.json().get("results", [])
             search_result = []
 
+            # TODO: Need to include title and standardize how search content is passed
             for result in results:
-                title, content = get_text_from_id(result["doc_id"], self.endpoint_collection)
                 search_result.append(
                     {
-                        "title": title,
-                        "href": result["doc_id"],
-                        "body": content,
+                        "title": None,
+                        "href": str(result["pid"]),
+                        "body": result["content"],
                     }
                 )
 
@@ -112,46 +83,6 @@ class HLTCOESearch():
         except requests.RequestException as e:
             print(f"Failed to retrieve search results: {e}")
             return None
-        
-
-class HLTCOESearch2():
-    """
-    HLTCOE Search Retriever
-    """
-    def __init__(self, query):
-        """
-        Initializes the object
-        Args:
-            query:
-        """
-        self.query = query
-   
-
-    def search(self, query: str, collection: str, max_results: int=10):
-        global _colbert_server
-        global _collection_name_mapping
-        query = urllib.parse.quote(query)
-
-        print(f'calling HLTCOE search: http://{_colbert_server[collection]}/query_doc?query={query}&content=false&limit={max_results} / {collection}')
-        resp = requests.get(f'http://{_colbert_server[collection]}/query_doc?query={query}&content=false&limit={max_results}')
-        # Preprocess the results
-        if resp is None:
-            return
-        try:
-            search_results = json.loads(resp.text)
-        except Exception:
-            return
-        if search_results is None:
-            return
-
-        # need to save title, href, body
-        return_results = []
-        # print(f"Search results: {search_results['results']}")
-        for result in search_results["results"]:
-            title, content = get_text_from_id(result["doc_id"], collection)
-            return_results.append({"title": title, "url": result["doc_id"], "raw_content": content})
-        return return_results
-
 
 
 

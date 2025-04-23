@@ -33,9 +33,10 @@ class Config:
                 value = self.convert_env_value(key, env_value, BaseConfig.__annotations__[key])
             setattr(self, key.lower(), value)
 
-        # Setting environment variable in case OPENAI_BASE_URL is set in config_file
-        if "OPENAI_BASE_URL" in config.keys():
-            os.environ["OPENAI_BASE_URL"] = config["OPENAI_BASE_URL"]
+        # Setting some environment variable in case they are specified in config_file but not .env
+        for v in ["OPENAI_BASE_URL", "RETRIEVER_ENDPOINT"]:
+            if v in config.keys():
+                os.environ[v] = config[v]
 
         # Handle RETRIEVER with default value
         retriever_env = os.environ.get("RETRIEVER", config.get("RETRIEVER", "tavily"))
@@ -44,6 +45,7 @@ class Config:
         except ValueError as e:
             print(f"Warning: {str(e)}. Defaulting to 'tavily' retriever.")
             self.retrievers = ["tavily"]
+
 
     def _set_embedding_attributes(self) -> None:
         self.embedding_provider, self.embedding_model = self.parse_embedding(

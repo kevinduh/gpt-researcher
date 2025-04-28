@@ -84,5 +84,9 @@ python experiments/LiveRAG25/run1.py experiments/config.openai.default.json
 
 # runs LiveRAG experiment using a local server with Falcon as the generation LLM
 python experiments/LiveRAG25/run1.py experiments/config.local.Falcon3-10B-Instruct.json
+
+# runs LiveRAG experiment on multiple queries
+python experiments/LiveRAG25/run_all.py experiments/config.local.Falcon3-10B-Instruct.json output.json
 ```
 
+For the last example with Falcon as generation LLM, we also use the Together service for other LLM and Embedding calls, so you will need to set `TOGETHER_API_KEY` in `.env`. 

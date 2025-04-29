@@ -30,6 +30,19 @@ class ResearchConductor:
         )
 
         search_results = await get_search_results(query, self.researcher.retrievers[0], query_domains)
+
+        # get the actual content from scaper
+        search_results = await self.researcher.scraper_manager.browse_urls([url.get("href") for url in search_results])
+        # search_results = [
+        #     { 
+        #         "title": None,
+        #         "href": str(result["pid"]),
+        #         "body": result["content"], 
+        #     }
+        #     for res,  in search_results
+        # ]
+
+
         self.logger.info(f"Initial search results obtained: {len(search_results)} results")
 
         await stream_output(

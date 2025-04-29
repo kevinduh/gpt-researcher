@@ -1,8 +1,9 @@
 {
 "OPENAI_BASE_URL":"http://r7n05:9097/",
 "RETRIEVER":"hltcoe",
-"RETRIEVER_ENDPOINT":"http://r8n10:9988",
+"RETRIEVER_ENDPOINT":"http://r7n03:9988",
 "SCRAPER":"hltcoe",
+"SCRAPTER_ENDPOINT": "http://r8n10:9988",
 "FAST_LLM":"together:Qwen/Qwen2.5-7B-Instruct-Turbo",
 "SMART_LLM":"together:Qwen/Qwen2.5-7B-Instruct-Turbo",
 "STRATEGIC_LLM":"together:Qwen/Qwen2.5-7B-Instruct-Turbo",

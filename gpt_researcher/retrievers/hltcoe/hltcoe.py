@@ -49,10 +49,10 @@ class HLTCOESearch():
             ]
         """
         try:
-            print(f'curl "{self.endpoint}/query_passage?query={self.query}&content=true&limit={max_results}"')
+            print(f'curl "{self.endpoint}/query_passage?query={self.query}&content=false&limit={max_results}"')
 
             response = requests.get(f"{self.endpoint}/query_passage?",
-                                    params={**self.params, 'query': self.query, 'content': 'true', 'limit': max_results})
+                                    params={**self.params, 'query': self.query, 'content': 'false', 'limit': max_results})
 
             # print("-----")
             # print(response.request.method)

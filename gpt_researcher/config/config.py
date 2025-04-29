@@ -34,7 +34,7 @@ class Config:
             setattr(self, key.lower(), value)
 
         # Setting some environment variable in case they are specified in config_file but not .env
-        for v in ["OPENAI_BASE_URL", "RETRIEVER_ENDPOINT"]:
+        for v in ["OPENAI_BASE_URL", "RETRIEVER_ENDPOINT", "SCRAPTER_ENDPOINT"]:
             if v in config.keys():
                 os.environ[v] = config[v]
 

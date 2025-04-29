@@ -12,7 +12,7 @@ class HLTCOEScraper:
     def __init__(self, link, session=None):
         self.link = link
         self.session = session
-        self.endpoint = os.getenv('RETRIEVER_ENDPOINT')
+        self.endpoint = os.getenv('SCRAPTER_ENDPOINT')
         self.endpoint_collection = os.getenv('RETRIEVER_ENDPOINT_COLLECTION')
 
     def scrape(self) -> tuple:

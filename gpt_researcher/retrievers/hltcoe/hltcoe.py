@@ -78,11 +78,9 @@ class HLTCOESearch():
 
             return search_result
 
-
-            return response.json()
         except requests.RequestException as e:
             print(f"Failed to retrieve search results: {e}")
-            return None
+            return []
 
 
 

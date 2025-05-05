@@ -58,7 +58,7 @@ if __name__ == "__main__":
 
     with open(output_file,'w') as OUT:
         loop = asyncio.get_event_loop()
-        for i, d in enumerate(data[:2]):
+        for i, d in enumerate(data):
             print(f"\n============{i}:{d['id']}==============")
             query = d["question"]
             start_time = time.time()

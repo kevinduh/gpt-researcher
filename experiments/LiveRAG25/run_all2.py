@@ -80,3 +80,5 @@ Use at most {total_words} words.
 
             print(json.dumps(d))
             OUT.write(json.dumps(d)+'\n')
+            OUT.flush()
+            sys.stdout.flush()

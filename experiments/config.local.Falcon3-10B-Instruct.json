@@ -1,12 +1,14 @@
 {
 "OPENAI_BASE_URL":"http://r7n05:9097/",
 "RETRIEVER":"hltcoe",
-"RETRIEVER_ENDPOINT":"http://r8n10:9988",
+"RETRIEVER_ENDPOINT":"http://r7n03:9988",
 "SCRAPER":"hltcoe",
 "FAST_LLM":"together:Qwen/Qwen2.5-7B-Instruct-Turbo",
 "SMART_LLM":"together:Qwen/Qwen2.5-7B-Instruct-Turbo",
 "STRATEGIC_LLM":"together:Qwen/Qwen2.5-7B-Instruct-Turbo",
 "GENERATION_LLM":"openai:tiiuae/Falcon3-10B-Instruct",
+"MAX_SEARCH_RESULTS_PER_QUERY":3,
+"MAX_ITERATIONS":2,
 "EMBEDDING":"together:togethercomputer/m2-bert-80M-8k-retrieval"
 }
 
